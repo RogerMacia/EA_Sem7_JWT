@@ -23,6 +23,7 @@ API REST construida con **Node.js**, **Express**, **TypeScript** y **Mongoose** 
 ```
 src/
 ├── server.ts              # Punto de entrada: conexión a Mongo e inicio del servidor
+├── swagger.ts              # Configuración del swagger
 ├── config/
 │   └── config.ts          # Configuración de variables de entorno (Mongo + puerto)
 ├── library/
@@ -111,13 +112,14 @@ Interfaces TypeScript exportadas: `IUsuario`, `IUsuarioModel`.
 
 ---
 
-### `src/controllers/Organizacion.ts`
-Implementa las operaciones CRUD sobre la colección `organizaciones`. 
+### `src/services/Organizacion.ts` y `src/services/Usuario.ts`
+Contienen la **lógica de negocio** y las llamadas directas a Mongoose. Es la capa encargada de interactuar con la persistencia de datos.
+
 
 ---
 
-### `src/controllers/Usuario.ts`
-Implementa las operaciones CRUD sobre la colección `usuarios`. 
+### `src/controllers/Organizacion.ts` y `src/controllers/Usuario.ts`
+Gestionan el protocolo HTTP. Reciben los datos del `Request`, llaman a la capa de **Service** correspondiente y devuelven la respuesta en el `Response` con el código de estado adecuado. No conocen los detalles de implementación de la base de datos.
 
 ---
 

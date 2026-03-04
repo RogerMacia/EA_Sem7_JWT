@@ -53,7 +53,8 @@ Debes crear un endpoint específico:
 
 ## 📂 Archivos clave a modificar
 - 📄 `src/models/Organizacion.ts`: Para definir la relación (ya sea virtual o por array).
-- 📄 `src/controllers/Organizacion.ts`: Para añadir lógica de `populate` y el nuevo endpoint.
+- 📄 `src/services/Organizacion.ts`: Para añadir la lógica de negocio y filtros.
+- 📄 `src/controllers/Organizacion.ts`: Para recibir la petición y llamar al servicio.
 - 📄 `src/routes/Organizacion.ts`: Para registrar la nueva ruta y su documentación Swagger.
 
 ---
@@ -61,4 +62,4 @@ Debes crear un endpoint específico:
 ## 🚀 Cómo empezar
 1. Lee los ejemplos en las carpetas `manual_vector` y `virtuals` para entender las diferencias.
 2. Elige una estrategia.
-3. ¡Manos a la obra! Modifica el código y prueba con Postman o Swagger.
+3. ¡Manos a la obra! Modifica el código y prueba con  Swagger.
