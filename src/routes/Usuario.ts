@@ -63,6 +63,8 @@ const router = express.Router();
  *   post:
  *     summary: Crea un usuario
  *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -75,7 +77,7 @@ const router = express.Router();
  *       422:
  *         description: Validación fallida (Joi)
  */
-router.post('/', ValidateJoi(Schemas.usuario.create), controller.createUsuario);
+router.post('/',authenticateToken, ValidateJoi(Schemas.usuario.create), controller.createUsuario);
 
 /**
  * @openapi
@@ -83,6 +85,8 @@ router.post('/', ValidateJoi(Schemas.usuario.create), controller.createUsuario);
  *   get:
  *     summary: Obtiene un usuario por ID
  *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: usuarioId
@@ -96,7 +100,7 @@ router.post('/', ValidateJoi(Schemas.usuario.create), controller.createUsuario);
  *       404:
  *         description: No encontrado
  */
-router.get('/:usuarioId', controller.readUsuario);
+router.get('/:usuarioId',authenticateToken ,controller.readUsuario);
 
 /**
  * @openapi
@@ -104,11 +108,13 @@ router.get('/:usuarioId', controller.readUsuario);
  *   get:
  *     summary: Lista todos los usuarios
  *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: OK
  */
-router.get('/', controller.readAll);
+router.get('/',authenticateToken, controller.readAll);
 
 /**
  * @openapi
@@ -116,6 +122,8 @@ router.get('/', controller.readAll);
  *   put:
  *     summary: Actualiza un usuario por ID
  *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: usuarioId
@@ -137,7 +145,7 @@ router.get('/', controller.readAll);
  *       422:
  *         description: Validación fallida (Joi)
  */
-router.put('/:usuarioId', ValidateJoi(Schemas.usuario.update), controller.updateUsuario);
+router.put('/:usuarioId',authenticateToken, ValidateJoi(Schemas.usuario.update), controller.updateUsuario);
 
 /**
  * @openapi
@@ -145,6 +153,8 @@ router.put('/:usuarioId', ValidateJoi(Schemas.usuario.update), controller.update
  *   delete:
  *     summary: Elimina un usuario por ID
  *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: usuarioId
@@ -158,6 +168,6 @@ router.put('/:usuarioId', ValidateJoi(Schemas.usuario.update), controller.update
  *       404:
  *         description: No encontrado
  */
-router.delete('/:usuarioId', controller.deleteUsuario);
+router.delete('/:usuarioId',authenticateToken, controller.deleteUsuario);
 
 export default router;
