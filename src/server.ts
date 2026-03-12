@@ -6,6 +6,7 @@ import { config } from './config/config';
 import Logging from './library/Logging';
 import organizacionRoutes from './routes/Organizacion';
 import usuarioRoutes from './routes/Usuario';
+import authRoutes from './routes/auth';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
 
@@ -47,6 +48,7 @@ const StartServer = () => {
     router.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     /** Routes */
+    router.use('/auth', authRoutes);
     router.use('/organizaciones', organizacionRoutes);
     router.use('/usuarios', usuarioRoutes);
 
