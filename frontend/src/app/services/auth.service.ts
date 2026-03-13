@@ -48,9 +48,20 @@ export class AuthService {
    * Si tiene éxito, redirige a /login.
    */
   register(payload: RegisterPayload): Observable<any> {
-    return this.http.post(`${API_URL}/auth/register`, payload).pipe(
+    return this.http.post(`${API_URL}/usuarios`, payload).pipe(
       tap(() => {
         this.router.navigate(['/login']);
+      })
+    );
+  }
+
+  /**
+   * Refresca el token actual.
+   */
+  refreshToken(): Observable<{ token: string }> {
+    return this.http.get<{ token: string }>(`${API_URL}/auth/refresh`).pipe(
+      tap((res) => {
+        this.saveToken(res.token);
       })
     );
   }

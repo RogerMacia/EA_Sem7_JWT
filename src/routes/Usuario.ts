@@ -77,7 +77,7 @@ const router = express.Router();
  *       422:
  *         description: Validación fallida (Joi)
  */
-router.post('/',authenticateToken, ValidateJoi(Schemas.usuario.create), controller.createUsuario);
+router.post('/', ValidateJoi(Schemas.usuario.create), controller.createUsuario);
 
 /**
  * @openapi

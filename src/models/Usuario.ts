@@ -1,5 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
+import bcrypt from 'bcryptjs';
+
 export interface IUsuario {
     name: string;
     email: string;
@@ -21,5 +23,19 @@ const UsuarioSchema: Schema = new Schema(
         versionKey: false
     }
 );
+
+UsuarioSchema.pre<IUsuarioModel>('save', async function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error: any) {
+        next(error);
+    }
+});
 
 export default mongoose.model<IUsuarioModel>('Usuario', UsuarioSchema);

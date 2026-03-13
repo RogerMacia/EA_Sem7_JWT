@@ -5,48 +5,6 @@ import Usuario from '../models/Usuario';
 import { generateToken } from '../utils/jwt';
 
 /**
- * POST /auth/register
- * Crea un usuario nuevo (con contraseña hasheada). NO genera token.
- */
-export const register = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, email, password, organizacion } = req.body;
-
-    try {
-        // Verificar si el email ya existe
-        const exists = await Usuario.findOne({ email });
-        if (exists) {
-            return res.status(409).json({ message: 'El email ya está registrado' });
-        }
-
-        // Hashear la contraseña
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Crear usuario
-        const usuario = new Usuario({
-            _id: new mongoose.Types.ObjectId(),
-            name,
-            email,
-            password: hashedPassword,
-            organizacion
-        });
-
-        const saved = await usuario.save();
-
-        return res.status(201).json({
-            message: 'Usuario registrado correctamente',
-            usuario: {
-                _id: saved._id,
-                name: saved.name,
-                email: saved.email,
-                organizacion: saved.organizacion
-            }
-        });
-    } catch (error) {
-        return res.status(500).json({ error });
-    }
-};
-
-/**
  * POST /auth/login
  * Verifica credenciales y, si son correctas, genera y devuelve el JWT.
  */
@@ -78,6 +36,29 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
                 email: usuario.email,
                 organizacion: usuario.organizacion
             }
+        });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+};
+
+/**
+ * POST /auth/refresh
+ * Genera un nuevo token basado en el token actual (debe ser válido).
+ */
+export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = (req as any).user;
+        if (!user) {
+            return res.status(401).json({ message: 'No hay información de usuario en el token' });
+        }
+
+        // Generar un nuevo token
+        const token = generateToken(user.name, user.email, user.organizacion);
+
+        return res.status(200).json({
+            message: 'Token refrescado',
+            token
         });
     } catch (error) {
         return res.status(500).json({ error });

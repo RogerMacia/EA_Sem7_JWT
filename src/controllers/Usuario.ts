@@ -6,9 +6,12 @@ const createUsuario = async (req: Request, res: Response, next: NextFunction) =>
    
 
     try {
-       const savedUsuario = await UsuarioService.createUsuario(req.body);
+        const savedUsuario = await UsuarioService.createUsuario(req.body);
         return res.status(201).json(savedUsuario);
-    } catch (error) {
+    } catch (error: any) {
+        if (error.code === 11000) {
+            return res.status(409).json({ message: 'El email ya está registrado' });
+        }
         return res.status(500).json({ error });
     }
 };

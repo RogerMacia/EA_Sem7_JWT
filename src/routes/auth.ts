@@ -1,20 +1,12 @@
 import express from 'express';
-import { register, login } from '../controllers/auth';
+import { login, refreshToken } from '../controllers/auth';
 import Joi from 'joi';
 import { ValidateJoi } from '../middleware/Joi';
+import { authenticateToken } from '../middleware/auth';
 
 const router = express.Router();
 
 // Schemas de validación para auth
-const registerSchema = Joi.object({
-    name: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
-    organizacion: Joi.string()
-        .regex(/^[0-9a-fA-F]{24}$/)
-        .required()
-});
-
 const loginSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required()
@@ -26,42 +18,6 @@ const loginSchema = Joi.object({
  *   - name: Auth
  *     description: Endpoints de autenticación
  *
- * /auth/register:
- *   post:
- *     summary: Registra un nuevo usuario (NO genera token)
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [name, email, password, organizacion]
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Omar"
- *               email:
- *                 type: string
- *                 example: "omar@gmail.com"
- *               password:
- *                 type: string
- *                 example: "secret123"
- *               organizacion:
- *                 type: string
- *                 example: "65f1c2a1b2c3d4e5f6789013"
- *     responses:
- *       201:
- *         description: Usuario registrado
- *       409:
- *         description: Email ya registrado
- *       422:
- *         description: Validación fallida
- */
-router.post('/register', ValidateJoi(registerSchema), register);
-
-/**
- * @openapi
  * /auth/login:
  *   post:
  *     summary: Inicia sesión y devuelve el JWT
@@ -87,5 +43,21 @@ router.post('/register', ValidateJoi(registerSchema), register);
  *         description: Credenciales incorrectas
  */
 router.post('/login', ValidateJoi(loginSchema), login);
+
+/**
+ * @openapi
+ * /auth/refresh:
+ *   get:
+ *     summary: Refresca el token JWT
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Token refrescado correctamente
+ *       401:
+ *         description: No autorizado (token faltante o inválido)
+ */
+router.get('/refresh', authenticateToken, refreshToken);
 
 export default router;

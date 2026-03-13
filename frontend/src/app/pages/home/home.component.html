@@ -22,10 +22,16 @@
         Esta petición enviará el token oculto en las cabeceras.
       </p>
 
-      <button class="btn btn-primary" (click)="cargarUsuarios()" [disabled]="loadingUsuarios" style="margin-bottom: 16px;">
-        <span *ngIf="loadingUsuarios">Cargando...</span>
-        <span *ngIf="!loadingUsuarios">Cargar Lista de Usuarios</span>
-      </button>
+      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <button class="btn btn-primary" (click)="cargarUsuarios()" [disabled]="loadingUsuarios">
+          <span *ngIf="loadingUsuarios">Cargando...</span>
+          <span *ngIf="!loadingUsuarios">Cargar Lista de Usuarios</span>
+        </button>
+
+        <button class="btn btn-secondary" (click)="refreshToken()" style="background-color: #4f46e5; color: white;">
+          Refrescar Token
+        </button>
+      </div>
 
       <div *ngIf="errorUsuarios" class="alert alert-error">
         {{ errorUsuarios }}

@@ -32,13 +32,26 @@ export class HomeComponent implements OnInit {
     this.errorUsuarios = '';
 
     this.authService.getUsuarios().subscribe({
-      next: (data) => {
+      next: (data: Usuario[]) => {
         this.usuarios = data;
         this.loadingUsuarios = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.errorUsuarios = err.error?.message || 'Error al cargar usuarios';
         this.loadingUsuarios = false;
+      }
+    });
+  }
+
+  refreshToken(): void {
+    this.authService.refreshToken().subscribe({
+      next: (res: { token: string }) => {
+        const token = res.token;
+        this.tokenPreview = token.substring(0, 50) + '...';
+        alert('Token refrescado correctamente');
+      },
+      error: (err: any) => {
+        this.errorUsuarios = err.error?.message || 'Error al refrescar el token';
       }
     });
   }
