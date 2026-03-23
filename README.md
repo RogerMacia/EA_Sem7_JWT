@@ -80,3 +80,11 @@ JWT_REFRESH_EXPIRES_IN="7d"
 
 ---
 ¡Explora el código y fíjate en cómo la separación de servicios y controladores hace que todo sea más fácil de testear y mantener! 
+
+
+# Materials consultats
+- Vídeos penjats a Atenea
+- Seminaris anteriors
+
+# Assistència IA
+- Com mirar l'usuari del payload en el middleware
