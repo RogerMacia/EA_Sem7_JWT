@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService, Usuario } from '../../services/auth.service';
 
@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   loadingUsuarios = false;
   errorUsuarios = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     const token = this.authService.getToken() || '';
@@ -54,6 +54,23 @@ export class HomeComponent implements OnInit {
       },
       error: (err: any) => {
         this.errorUsuarios = err.error?.message || 'Error al refrescar el token';
+      }
+    });
+  }
+
+  deleteUser(id: string): void {
+    this.authService.deleteUser(id).subscribe({
+      next: (res) => {
+        this.cargarUsuarios();
+      },
+      error: (err) => {
+        if (err.status == 403) {
+          this.errorUsuarios = 'You are not authorized to do this operation';
+          this.cdr.markForCheck();
+        }
+        else {
+          console.log(err);
+        }
       }
     });
   }

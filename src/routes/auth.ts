@@ -2,7 +2,7 @@ import express from 'express';
 import { login, logout, refreshToken, getMe } from '../controllers/auth';
 import Joi from 'joi';
 import { ValidateJoi } from '../middleware/Joi';
-import { authenticateToken } from '../middleware/auth';
+import { authenticateToken } from '../middleware/authentication';
 
 const router = express.Router();
 
@@ -68,6 +68,8 @@ router.post('/refresh', refreshToken);
  *       200:
  *         description: Logout exitoso
  */
+router.post('/logout', logout);
+
 /**
  * @openapi
  * /auth/me:

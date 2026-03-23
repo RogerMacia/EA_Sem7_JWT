@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { config } from '../config/config';
 import * as authService from '../services/auth';
-import { AuthRequest } from '../middleware/auth';
+import { AuthRequest } from '../middleware/authentication';
 import Usuario from '../models/Usuario';
 
 /**
@@ -28,7 +28,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
                 _id: usuario._id,
                 name: usuario.name,
                 email: usuario.email,
-                organizacion: usuario.organizacion
+                organizacion: usuario.organizacion,
+                role: usuario.role,
             }
         });
     } catch (error) {

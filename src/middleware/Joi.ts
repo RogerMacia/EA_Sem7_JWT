@@ -34,7 +34,8 @@ export const Schemas = {
                 .required(),
             name: Joi.string().required(),
             email: Joi.string().email().required(),
-            password: Joi.string().min(6).required()
+            password: Joi.string().min(6).required(),
+            role: Joi.string().valid('admin', 'user').default('user'),
         }),
         update: Joi.object<IUsuario>({
             organizacion: Joi.string()
@@ -42,7 +43,8 @@ export const Schemas = {
                 .required(),
             name: Joi.string().required(),
             email: Joi.string().email().required(),
-            password: Joi.string().min(6).required()
+            password: Joi.string().min(6).required(),
+            role: Joi.string().valid('admin', 'user').default('user'),
         })
     }
 };

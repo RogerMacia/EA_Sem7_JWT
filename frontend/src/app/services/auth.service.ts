@@ -8,6 +8,7 @@ export interface RegisterPayload {
   email: string;
   password: string;
   organizacion: string;
+  role: 'user' | 'admin';
 }
 
 export interface LoginPayload {
@@ -23,6 +24,7 @@ export interface LoginResponse {
     name: string;
     email: string;
     organizacion: string;
+    role: 'user' | 'admin';
   };
 }
 
@@ -31,6 +33,7 @@ export interface Usuario {
   name: string;
   email: string;
   organizacion: any;
+  role: 'user' | 'admin';
 }
 
 const TOKEN_KEY = 'jwt_token';
@@ -113,5 +116,9 @@ export class AuthService {
 
     localStorage.removeItem(TOKEN_KEY);
     this.router.navigate(['/login']);
+  }
+
+  deleteUser(id: string): Observable<Usuario> {
+    return this.http.delete<Usuario>(`${API_URL}/usuarios/${id}`, { withCredentials: true })
   }
 }

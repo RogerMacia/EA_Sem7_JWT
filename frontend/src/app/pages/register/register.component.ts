@@ -16,7 +16,8 @@ export class RegisterComponent {
     name: '',
     email: '',
     password: '',
-    organizacion: ''
+    organizacion: '',
+    role: 'user',
   };
   errorMessage = '';
   successMessage = '';

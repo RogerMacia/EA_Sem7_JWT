@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import UsuarioService from '../services/Usuario';
-import { AuthRequest } from '../middleware/auth';
+import { AuthRequest } from '../middleware/authentication';
 
 const createUsuario = async (req: Request, res: Response, next: NextFunction) => {
    
@@ -39,10 +39,7 @@ const readAll = async (req: Request, res: Response, next: NextFunction) => {
 const updateUsuario = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const usuarioId = req.params.usuarioId;
 
-    // Protección de recurso: solo puedes actualizarte a ti mismo
-    if (req.user?.id !== usuarioId) {
-        return res.status(403).json({ message: 'No tienes permiso para actualizar a otro usuario' });
-    }
+    // Protecció de recusos al Authorization
 
     try {
         const updatedUsuario = await UsuarioService.updateUsuario(usuarioId, req.body);
@@ -52,14 +49,10 @@ const updateUsuario = async (req: AuthRequest, res: Response, next: NextFunction
     }
 };
 
-
 const deleteUsuario = async (req: AuthRequest, res: Response, next: NextFunction) => {
     const usuarioId = req.params.usuarioId;
 
-    // Protección de recurso: solo puedes borrarte a ti mismo
-    if (req.user?.id !== usuarioId) {
-        return res.status(403).json({ message: 'No tienes permiso para borrar a otro usuario' });
-    }
+    // Protecció de recusos al Authorization
 
     try {
         const usuario = await UsuarioService.deleteUsuario(usuarioId);

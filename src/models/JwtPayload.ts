@@ -3,4 +3,5 @@ export interface IJwtPayload {
     name: string;
     email: string;
     organizacion: string;
+    role: 'admin' | 'user';
 }
